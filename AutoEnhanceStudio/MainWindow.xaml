@@ -1,12 +1,43 @@
 ﻿<Window x:Class="MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:AutoEnhanceStudio"
-        mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
+        xmlns:views="clr-namespace:AutoEnhanceStudio.Views"
+        Title="AutoEnhance Studio" Height="800" Width="1200"
+        AllowDrop="True" Drop="OnVideoDrop">
     <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <!-- Header/Buttons -->
+            <RowDefinition Height="*"/>
+            <!-- Main Content -->
+            <RowDefinition Height="200"/>
+            <!-- Worker Manager -->
+        </Grid.RowDefinitions>
 
+        <!-- Header with Buttons -->
+        <StackPanel Grid.Row="0" Orientation="Horizontal" Margin="10">
+            <Button Content="Install Dependencies" Command="{Binding InstallDependenciesCommand}" ToolTip="Runs PowerShell to install FFmpeg, Python deps, etc."/>
+            <Button Content="Auto Enhance" Command="{Binding AutoEnhanceCommand}" Margin="10,0"/>
+            <Button Content="Generate Report" Command="{Binding GenerateReportCommand}"/>
+        </StackPanel>
+
+        <!-- Main Content Tabs -->
+        <TabControl Grid.Row="1" Margin="10">
+            <TabItem Header="Ingest &amp; Diagnostics">
+                <Grid>
+                    <TextBlock Text="Drag &amp; drop video here" FontSize="20" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                    <views:DiagnosticsView DataContext="{Binding DiagnosticsVM}"/>
+                </Grid>
+            </TabItem>
+            <TabItem Header="Plan">
+                <views:PlanView DataContext="{Binding PlanVM}"/>
+            </TabItem>
+            <TabItem Header="A/B Preview">
+                <views:ABPreviewView DataContext="{Binding ABPreviewVM}"/>
+            </TabItem>
+        </TabControl>
+
+        <!-- Worker Manager Pane -->
+        <views:WorkerManagerView Grid.Row="2" DataContext="{Binding WorkerManagerVM}" Margin="10"/>
     </Grid>
 </Window>
