@@ -1,25 +1,27 @@
 ﻿Imports CommunityToolkit.Mvvm.ComponentModel
 Imports CommunityToolkit.Mvvm.Input
 
-Namespace AutoEnhanceStudio
+Partial Public Class WorkerManagerViewModel
+    Inherits ObservableObject
 
-    Partial Public Class WorkerManagerViewModel
-        Inherits ObservableObject
+    Private _logs As String
+    Public Property Logs As String
+        Get
+            Return _logs
+        End Get
+        Set(value As String)
+            SetProperty(_logs, value)
+        End Set
+    End Property
 
-        <ObservableProperty> Private _logs As String  ' For displaying GPU/CPU/logs
+    <ObservableProperty> Private _gpuUsage As Double
 
-        <ObservableProperty> Private _gpuUsage As Double  ' Placeholder for telemetry
+    Public Sub New()
+        Logs = "Worker started..."
+    End Sub
 
-        Public Sub New()
-            ' Initialize monitoring (e.g., timer for polling)
-            Logs = "Worker started..."
-        End Sub
+    Public Sub UpdateLogs(newLog As String)
+        Logs &= Environment.NewLine & newLog
+    End Sub
 
-        ' Add methods for updating logs/GPU (e.g., from Python feedback)
-        Public Sub UpdateLogs(newLog As String)
-            Logs &= Environment.NewLine & newLog
-        End Sub
-
-    End Class
-
-End Namespace
+End Class
